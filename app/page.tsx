@@ -1,103 +1,101 @@
+"use client";
+
+import { Lexend } from "next/font/google";
 import Image from "next/image";
+
+const lexend = Lexend({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className={`min-h-screen p-4 md:p-8 bg-gray-50 ${lexend.className}`}>
+      {/* Navbar */}
+      <nav className="max-w-7xl mx-auto">
+        <h1 className="text-black text-center text-2xl md:text-[30px]">
+          <span className="font-bold">Climate</span> & Ressources
+        </h1>
+        <div className="mx-auto w-full max-w-[1168px] h-[3px] bg-black mt-2" />
+      </nav>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Carousel / Main bild */}
+      <div className="mt-6 md:mt-10 flex justify-center">
+        <div className="w-full max-w-[1168px] aspect-[1168/626] relative">
+          <Image
+            src="/carousel/carousel_1.png"
+            alt="Climate and Resources - Flora.exe"
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      {/* Main section */}
+      <div className="mt-20 md:mt-30 flex justify-center">
+        <div className="flex flex-col md:flex-row w-full max-w-[1168px] gap-4 md:gap-6">
+          {/* Left column - 7/17 width */}
+          <div className="w-full md:w-[40%]">
+            <h1 className="text-black text-left text-2xl md:text-[30px] font-bold">
+              Projektverantwortliche
+            </h1>
+            <span className="text-black text-left text-xs">
+              Projektmodul KI - 04. Semester
+            </span>
+            <ul className="text-black pt-20 pb-20">
+              <li>Sven Fydrich</li>
+              <li>Gloria Bichler</li>
+              <li>Florian von Basse</li>
+              <li>Emanuel Ostertag</li>
+              <li>Katharina Brandtner</li>
+            </ul>
+            <div className="relative w-full aspect-[4/3] hidden md:block">
+              <Image
+                src="/carousel/group_image.png"
+                alt="Project Team"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
+
+          {/* Vertical divider - hidden on mobile */}
+          <div className="hidden md:block w-[3px] h-[941px] bg-black" />
+
+          {/* Right column - 10/17 width */}
+          <div className="w-full md:w-[60%]">
+            <div className="flex flex-col md:flex-row items-start gap-30">
+              {/* Text section */}
+              <div className="flex flex-col">
+                <h1 className="text-black text-right text-2xl md:text-[30px] font-bold">
+                  Ausstellung
+                </h1>
+                <span className="text-black text-right text-xs mt-2">
+                  Flora.exe
+                </span>
+              </div>
+
+              {/* Image section */}
+              <div className="relative w-full md:w-[383px] h-[500px] hidden md:block">
+                <Image
+                  src="/carousel/austellung.png"
+                  alt="Flora.exe Ausstellung"
+                  fill
+                  className="object-cover object-right"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Interaktion section */}
+      <div className="mt-10 flex flex-col items-center pt-20">
+        <h1 className="text-black text-center text-2xl md:text-[30px] font-bold">
+          Interaktion
+        </h1>
+        <span className="text-black text-center text-xs">
+          Wie reagiert die Pflanze?
+        </span>
+      </div>
     </div>
   );
 }
