@@ -64,7 +64,7 @@ export default function Home() {
           <div className="w-full md:w-[60%]">
             <div className="flex flex-col md:flex-row items-start gap-5">
               {/* Text section */}
-              <div className="flex flex-col md: w-[50%]">
+              <div className="flex flex-col w-full md:w-[50%]">
                 <h1 className="text-black font-bold text-6xl text-left md:text-right md:text-3xl">
                   Flora.exe
                 </h1>
@@ -222,9 +222,9 @@ export default function Home() {
 
       <div className="max-w-[1168px] mx-auto pt-20 px-4">
         <div className="w-full h-[3px] bg-black" />
-        <div className="flex flex-col md:flex-row py-10 gap-10">
+        <div className="flex flex-col-reverse md:flex-row- py-10 gap-10">
           <div className="w-full">
-            <ul className="text-black text-lg space-y-2">
+            <ul className="text-black text-lg space-y-2 text-center md:text-left">
               <li>Sven Fydrich</li>
               <li>Gloria Bichler</li>
               <li>Florian von Basse</li>
