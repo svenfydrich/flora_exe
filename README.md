@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flora.exe
 
-## Getting Started
+Flora.exe ist eine interaktive Kunstinstallation, die das Zusammenspiel von Natur, Mensch und Technologie erforscht. Im Mittelpunkt steht eine Pflanze, die mit Sensoren ausgestattet ist und über verschiedene Medien – ein Gemälde, einen Fernseher und diese Webseite – mit den Besuchern kommuniziert.
 
-First, run the development server:
+## Konzept
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Flora.exe thematisiert das Ringen um Aufmerksamkeit in einer digitalisierten Welt. Während wir uns oft der Technik und Onlinewelt zuwenden, wird die Natur übersehen. Flora nimmt über Sensoren wahr, wie viel Beachtung ihr geschenkt wird, und reagiert darauf: Je nach Interaktion verändert sich das digitale Gemälde und die Stimmung der Installation.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Interaktion
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Die Pflanze reagiert auf verschiedene äußere Reize:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Nähe und Berührung:** Freundliche Annäherung und Berührungen machen Flora glücklich.
+- **Ablenkung durch Technik:** Wird ein Handy gezückt oder Flora ignoriert, wird das Bild düster und hoffnungslos.
 
-## Learn More
+## Funktionsweise
 
-To learn more about Next.js, take a look at the following resources:
+- **Input:** Flora nutzt eine Kamera, um ihre Umgebung zu sehen, und Sensoren, um Berührungen zu spüren.
+- **Output:** Ihre Emotionen und Gedanken teilt sie über einen Fernseher (Text) und ein digitales Gemälde (Bildsprache) mit.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Team
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Das Projekt entstand im Rahmen des Moduls "Künstliche Intelligenz" (4. Semester Informatik & Design, Hochschule München).
 
-## Deploy on Vercel
+**Projektverantwortliche:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Sven Fydrich
+- Gloria Bichler
+- Florian von Basse
+- Emanuel Ostertag
+- Katharina Brandtner
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Betreuung:** Yves Peitzner, Prof. Dr. Hanna Moser
+
+---
+
+Mehr Informationen und Eindrücke auf der Webseite: [flora.exe](https://flora-exe.de)
