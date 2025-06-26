@@ -13,14 +13,14 @@ export default function Home() {
     <div className={`min-h-screen p-8 bg-white ${lexend.className}`}>
       {/* Navbar */}
       <nav className="max-w-7xl mx-auto">
-        <h1 className="text-black text-center text-2xl md:text-[30px]">
-          <span className="font-bold">Climate</span> & Ressources
+        <h1 className="text-black font-extralight text-center text-2xl pt-2">
+          Climate & Ressources
         </h1>
-        <div className="mx-auto w-full max-w-[1168px] h-[3px] bg-black mt-2" />
+        <div className="mx-auto w-full max-w-[1168px] h-[1px] bg-black mt-2" />
       </nav>
 
-      {/* Carousel / Main bild */}
-      <div className="mt-6 md:mt-10 flex justify-center">
+      {/* Hero section */}
+      <div className="my-10 flex justify-center">
         <div className="w-full max-w-[1168px] aspect-[1168/626] relative">
           <Image
             src="/carousel/carousel_1.png"
@@ -33,11 +33,11 @@ export default function Home() {
       </div>
 
       {/* Main section */}
-      <div className="mt-20 md:mt-30 flex justify-center">
+      <div className="mt-30 flex justify-center">
         <div className="flex flex-col md:flex-row w-full max-w-[1168px] gap-4 md:gap-6">
           {/* Left column - 7/17 width */}
-          <div className="w-full md:w-[40%]">
-            <h1 className="text-black text-left text-3xl md:text-[30px] font-bold">
+          <div className="w-full md:w-[40%] hidden md:block">
+            <h1 className="text-black text-left text-4xl font-bold">
               Projektverantwortliche
             </h1>
             <span className="text-[#6b6b6b] text-left text-lg">
@@ -58,6 +58,9 @@ export default function Home() {
                 className="object-cover rounded-xs"
               />
             </div>
+            <p className="text-[#363636] mt-5">
+              (Links nach rechts) Gloria, Katharina, Emanuel, Sven, Florian
+            </p>
           </div>
 
           {/* Vertical divider - hidden on mobile */}
@@ -68,14 +71,15 @@ export default function Home() {
             <div className="flex flex-col md:flex-row items-start gap-5">
               {/* Text section */}
               <div className="flex flex-col w-full md:w-[50%]">
-                <h1 className="text-black font-bold text-5xl text-left md:text-right md:text-3xl">
+                <h1 className="text-black font-bold text-4xl text-left md:text-right">
                   Flora.exe
                 </h1>
                 <div className="w-full h-[3px] bg-black mt-3 max-w-[1168px]" />
-                <span className="text-[#3a3a3a] text-justify text-lg md:text-right mt-5">
-                  Eine einzigartige KI-gestützte Kunstaustellung, die die
-                  Interaktion mit einer Zimmerpflanze in malerische Gemälde
-                  verwandelt.
+                <span className="text-[#3a3a3a] text-justify text-lg mt-5">
+                  Flora.exe besteht aus einer Pflanze mit Sensoren, einem
+                  Gemälde, einem Fernseher und einem QR-Code der zu dieser
+                  Webseite führt. Die Installation verändert sich je nach
+                  Aufmerksamkeit, die man Flora entgegenbringt.
                 </span>
               </div>
 
@@ -89,17 +93,25 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="pt-20">
-              <h1 className="text-black pt-10 font-bold text-5xl md:text-3xl">
-                Konzept
-              </h1>
+            <div className="mt-30">
+              <h1 className="text-black font-bold text-4xl">Konzept</h1>
               <div className="w-full h-[3px] bg-black mt-3 max-w-[1168px]" />
               <p className="text-[#3a3a3a] text-justify md: text-lg mt-5">
-                Was passiert, wenn wir der Natur eine Stimme geben? <br />
-                Wir haben Bildschirme gebaut, die um unsere Aufmerksamkeit
-                kämpfen. Aber was, wenn die Natur dasselbe tut? flora.exe lenkt
-                unseren Blick zurück – auf das, wovon wir abhängen. Lorem ipsum
-                blabla
+                Flora.exe handelt vom Ringen um Aufmerksamkeit. Wir schenken sie
+                unseren Handys, der Technik, der Onlinewelt und vergessen dabei
+                die Natur und die Pflanzen. Sie wird ausgeblendet, übersehen und
+                leidet unter unserem Verhalten. In unserem Projekt steht Flora
+                im Mittelpunkt. Mit Sensoren nimmt sie die Beachtung wahr, die
+                ihr entgegengebracht wird. Ihre Gedanken und Hilfeschreie
+                überträgt sie über einen Fernseher an den Betrachter. Erhält sie
+                Aufmerksamkeit, wandelt sich das Gemälde in eine wunderschöne,
+                lebendige Landschaft. Doch wenn sie bemerkt, dass Fotos von ihr
+                gemacht werden wandelt sich die Stimmung. Das Bild wird düster
+                und hoffnungslos. Der Widerspruch, dass die Pflanze nur über
+                Technik mit uns kommunizieren kann, zeigt, wie entfremdet wir
+                von der Natur sind. Sie kann nur durch den Filter der
+                Technologie zu uns durchdringen, um unsere Beachtung zu
+                erlangen.
               </p>
             </div>
           </div>
@@ -107,8 +119,8 @@ export default function Home() {
       </div>
 
       {/* Interaktion section */}
-      <div className="mt-10 flex flex-col items-start md:items-center pt-20">
-        <h1 className="text-black text-left text-5xl md:text-center font-bold">
+      <div className="mt-30 flex flex-col items-start md:items-center md:mt-100">
+        <h1 className="text-black text-left text-4xl md:text-center font-bold">
           Interaktion
         </h1>
         <div className="w-full h-[3px] bg-black mt-3 max-w-[1168px]" />
@@ -122,7 +134,7 @@ export default function Home() {
       </div>
 
       {/* Banner section */}
-      <div>
+      <div className="hidden md:block">
         <div className="flex flex-col items-center pt-10">
           <Image
             src="/banners/nähe_banner.png"
@@ -152,12 +164,10 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-full h-[3px] bg-black mt-10 max-w-[1168px] mx-auto" />
-
       {/* Emotionen section */}
-      <div className="mx-auto w-full max-w-[1168px] mt-50">
+      <div className="mx-auto w-full max-w-[1168px] mt-30 md:mt-100">
         <div className="w-full h-[3px] bg-black mt-3 max-w-[1168px]" />
-        <div className="flex flex-col md:flex-row items-center md:gap-10 py-10">
+        <div className="flex flex-col md:flex-row items-center md:gap-10 my-0">
           {/* Image section */}
           <div className="w-full md:w-1/2 flex justify-center">
             <div className="w-full md:pt-10 md:max-w-full">
@@ -173,7 +183,7 @@ export default function Home() {
           </div>
           {/* Text section */}
           <div className="flex flex-col pt-10 md:pt-0 w-full md:w-1/2">
-            <h1 className="text-black font-bold text-5xl">Emotionen</h1>
+            <h1 className="text-black font-bold text-4xl">Emotionen</h1>
             <div className="w-full h-[3px] bg-black mt-2 max-w-[1168px]" />
             <span className="text-[#3a3a3a] pt-10">
               Die Pflanze hat unterschiedliche Emotionen, die sie je nach
@@ -249,13 +259,14 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-full h-[3px] bg-black mt-10 max-w-[1168px] mx-auto" />
+      <div className="hidden md:flex w-full h-[3px] bg-black max-w-[1168px] mx-auto mt-10" />
 
       {/* Funktionsweise section */}
-      <div className="mx-auto w-full max-w-[1168px] mt-50">
+      <div className="mx-auto w-full max-w-[1168px] mt-30 md:mt-90">
         {/* Headline and intro above the divider */}
         <div className="flex flex-col w-full">
-          <h1 className="text-black font-bold text-5xl">Funktionsweise</h1>
+          <h1 className="text-black font-bold text-4xl">Funktionsweise</h1>
+          <div className="w-full h-[3px] bg-black mt-3 max-w-[1168px]" />
           <span className="text-[#3a3a3a] mt-6 text-justify">
             Da Pflanzen normalerweise nicht mit uns kommunizieren können, nutzt
             Flora mehrere Medien um dieses Hindernis zu überwinden. Im
@@ -263,13 +274,14 @@ export default function Home() {
             und Ausgabemedien, mit denen sie sich ausdrücken kann.
           </span>
         </div>
-        <div className="w-full h-[3px] bg-black mt-6 max-w-[1168px]" />
-        <div className="flex flex-col md:flex-row gap-10 mt-6">
+        <div className="flex flex-col gap-10 mt-6 md:flex-row md:mt-20">
           {/* Left column: Input */}
           <div className="flex flex-col w-full md:w-1/2 gap-10">
             {/* Sehen */}
             <div className="flex flex-col w-full mt-10 md:mt-0">
-              <h2 className="text-black font-bold text-5xl">Input</h2>
+              <h2 className="text-black font-bold text-4xl md:text-4xl">
+                Input
+              </h2>
               <h2 className="text-black text-2xl font-bold pt-5">Sehen</h2>
               <span className="text-[#3a3a3a] text-justify">
                 Damit Flora sehen kann, verwendet sie eine digitale Kamera. So
@@ -278,8 +290,8 @@ export default function Home() {
               </span>
             </div>
             {/* Fühlen */}
-            <div className="flex flex-col w-full mt-5">
-              <h2 className="text-black text-2xl font-bold pt-5">Fühlen</h2>
+            <div className="flex flex-col w-full mt-0 md:mt-10">
+              <h2 className="text-black text-2xl font-bold">Fühlen</h2>
               <span className="text-[#3a3a3a] text-justify">
                 Flora ist zwar ziemlich empfindlich, aber freut sich wenn du sie
                 zärtlich berührst. Mithilfe eines Midi-Controllers und ein wenig
@@ -296,7 +308,7 @@ export default function Home() {
           <div className="flex flex-col w-full md:w-1/2 gap-10 md:text-right">
             {/* Sprechen (Output) */}
             <div className="flex flex-col w-full mt-10 md:mt-0">
-              <h2 className="text-black font-bold text-5xl mt-10 md:mt-0">
+              <h2 className="text-black font-bold text-4xl md:text-4xl mt-10 md:mt-0">
                 Output
               </h2>
               <h2 className="text-black text-2xl font-bold pt-5 md:text-right">
@@ -309,8 +321,8 @@ export default function Home() {
               </span>
             </div>
             {/* Ausdrücken */}
-            <div className="flex flex-col w-full mt-5">
-              <h2 className="text-black text-2xl font-bold pt-5 md:text-right">
+            <div className="flex flex-col w-full mt-0 md:mt-10">
+              <h2 className="text-black text-2xl font-bold md:text-right">
                 Ausdrücken
               </h2>
               <span className="text-[#3a3a3a] text-justify md:text-right block">
@@ -324,34 +336,34 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-full h-[3px] bg-black mt-10 max-w-[1168px] mx-auto" />
+      <div className="hidden md: w-full h-[3px] bg-black mt-10 max-w-[1168px] mx-auto" />
 
       {/* Danksagung / Footer */}
-      <div className="max-w-[1168px] mx-auto mt-50">
+      <div className="max-w-[1168px] mx-auto mt-80 mb-30 md:mt-120 md:mb-10">
         <div className="flex flex-col items-center mt-10">
-          <h1 className="text-black text-center text-5xl font-bold">
+          <h1 className="text-black text-center text-4xl font-bold">
             Danksagung
           </h1>
           <div className="w-full h-[3px] bg-black mt-3" />
         </div>
         <div className="flex flex-col-reverse md:flex-row py-10 gap-10">
           <div className="w-full">
-            <ul className="text-black text-lg space-y-2 text-center md:text-left">
+            <ul className="flex flex-col-reverse md:flex-col text-black text-lg space-y-2 text-center md:text-left">
               <li>Sven Fydrich</li>
               <li>Gloria Bichler</li>
               <li>Florian von Basse</li>
               <li>Emanuel Ostertag</li>
               <li>Katharina Brandtner</li>
-              <li className="flex justify-center md:hidden">
-                <Image
-                  src="/flora.png"
-                  alt="Totaler Zerfall"
-                  width={50}
-                  height={550}
-                  className="rounded-full"
-                />
-              </li>
             </ul>
+            <div className="flex justify-center md:hidden mt-2">
+              <Image
+                src="/flora.png"
+                alt="Totaler Zerfall"
+                width={50}
+                height={550}
+                className="rounded-full"
+              />
+            </div>
           </div>
           <div className="flex flex-col gap-10 max-w-full md:max-w-[65%]">
             <span className="text-[#3a3a3a] text-lg text-justify">
