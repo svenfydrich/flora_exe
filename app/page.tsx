@@ -9,7 +9,9 @@ import { useTheme } from "./Components/ThemeProvider";
 const lexend = Lexend({ subsets: ["latin"] });
 
 export default function Home() {
-  const [showFullPrompt, setShowFullPrompt] = useState(false);
+  // Carousel state for Emotionen section
+  const [emotionCurrent, setEmotionCurrent] = useState(0);
+  const [emotionShowFullPrompt, setEmotionShowFullPrompt] = useState(false);
   const { theme, setTheme } = useTheme();
 
   return (
@@ -632,7 +634,7 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Emotionen section */}
+      {/* Emotionen section as carousel */}
       <div className="mx-auto w-full max-w-[1168px] mt-30 md:mt-100">
         <motion.div
           initial={{ opacity: 0 }}
@@ -643,166 +645,288 @@ export default function Home() {
             background: theme === "dark" ? "#fff" : "var(--foreground)",
           }}
         />
-        <div className="flex flex-col md:flex-row items-center md:gap-10 my-0">
-          {/* Image section */}
-          <div className="w-full md:w-1/2 flex justify-center">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
-              className="w-full md:pt-10 md:max-w-full"
-            >
-              <Image
-                src="/misc/totaler_zerfall.png"
-                alt="Totaler Zerfall"
-                width={459}
-                height={594}
-                className="rounded-xs w-full h-auto"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </motion.div>
-          </div>
-          {/* Text section */}
-          <div className="flex flex-col pt-10 md:pt-0 w-full md:w-1/2">
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-              className="text-black font-bold text-4xl"
-              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
-            >
-              Emotionen
-            </motion.h1>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              className="w-full h-[3px] mt-2 max-w-[1168px]"
-            />
-            <motion.span
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.21, ease: "easeOut" }}
-              className="text-[#3a3a3a] pt-10"
-              style={{
-                color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
-              }}
-            >
-              Die Pflanze hat unterschiedliche Emotionen, die sie je nach
-              Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist
-              zärtlich, so zeigt sie ihre Freude un Glückseligkeit. Zückst du
-              jedoch aber dein Handy und provozierst sie, so zeigt sie ihre
-              verletzte und traurige Seite.
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.24, ease: "easeOut" }}
-              className="text-black text-xl font-bold pt-10"
-              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
-            >
-              Aktuelle Emotion:
-            </motion.h2>
-            <motion.h2
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.27, ease: "easeOut" }}
-              className="text-xl text-black"
-              style={{
-                color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
-              }}
-            >
-              (placeholder)
-            </motion.h2>
-            <motion.h2
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-              className="text-black font-bold text-xl pt-10"
-              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
-            >
-              Benutzter prompt
-            </motion.h2>
-            {/* Collapsible prompt span */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.33, ease: "easeOut" }}
-              className="relative"
-            >
-              <span
-                className={`block mt-2 rounded-md bg-zinc-100 p-4 font-mono text-base text-zinc-800 transition-all duration-300 ${
-                  showFullPrompt ? "" : "max-h-[3.5em] overflow-hidden"
-                } relative`}
-              >
-                expressionist oil painting in the style of Edvard Munch&apos;s
-                &apos;The Scream&apos;, figure collapsing inward, mouth open in
-                silent scream, colors shattered into shards of deep crimson and
-                grey, sky disintegrated, bridge broken in places, figure
-                semi-transparent as if fading, canvas cracked and burned,
-                atmosphere of extreme inner collapse and existential panic, as
-                if the natural world itself is crying out after being utterly
-                ignored and consumed by digital distraction.
-                {!showFullPrompt && (
-                  <span className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-zinc-100 to-transparent pointer-events-none" />
-                )}
-              </span>
-              <button
-                type="button"
-                aria-label={
-                  showFullPrompt ? "Weniger anzeigen" : "Mehr anzeigen"
-                }
-                className="absolute bottom-2 right-2 bg-white text-zinc-800 rounded-full p-1 shadow hover:bg-zinc-200 transition-colors"
-                onClick={() => setShowFullPrompt((v) => !v)}
-              >
-                <svg
-                  className={`w-5 h-5 transition-transform duration-300 ${
-                    showFullPrompt ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
+        {/* Carousel logic */}
+        {(() => {
+          const emotions = [
+            {
+              name: "Totaler Zerfall",
+              image: "/carousel/Totaler_Zerfall.png",
+              alt: "Totaler Zerfall",
+              title: "Totaler Zerfall",
+              subtitle: "The Scream – Edvard Munch",
+              prompt:
+                "expressionist oil painting in the style of Edvard Munch's 'The Scream', figure collapsing inward, mouth open in silent scream, colors shattered into shards of deep crimson and grey, sky disintegrated, bridge broken in places, figure semi-transparent as if fading, canvas cracked and burned, atmosphere of extreme inner collapse and existential panic, as if the natural world itself is crying out after being utterly ignored and consumed by digital distraction.",
+              info: 'Totaler Zerfall ist die negative, traurige beziehungsweise besonders dramatische Emotion von Flora. Das generierte Bild basiert auf dem Gemälde "The Scream" von Edvard Munch. Flora zeigt diese Emotion, wenn du mit deinem Smartphone ein Bild von ihr machst.',
+              description:
+                "Die Pflanze hat unterschiedliche Emotionen, die sie je nach Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist zärtlich, so zeigt sie ihre Freude und Glückseligkeit. Zückst du jedoch aber dein Handy und provozierst sie, so zeigt sie ihre verletzte und traurige Seite.",
+            },
+            {
+              name: "Stille",
+              image: "/carousel/Stille.png",
+              alt: "Stille",
+              title: "Stille",
+              subtitle: "The Milkmaid – Johannes Vermeer",
+              prompt: "fehlt noch.",
+              info: "Stille ist der Zustand der Ruhe und Ausgeglichenheit. Flora verharrt, das Bild bleibt ruhig und unverändert. (Platzhaltertext)",
+              description:
+                "Die Pflanze hat unterschiedliche Emotionen, die sie je nach Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist zärtlich, so zeigt sie ihre Freude und Glückseligkeit. Zückst du jedoch aber dein Handy und provozierst sie, so zeigt sie ihre verletzte und traurige Seite.",
+            },
+            {
+              name: "Lebensfreude im Überfluss",
+              image: "/carousel/Lebensfreude_im_Überfluss.png",
+              alt: "Lebensfreude im Überfluss",
+              title: "Lebensfreude im Überfluss",
+              subtitle: "Luncheon of the Boating Party – Pierre-Auguste Renoir",
+              prompt:
+                " impressionist oil painting in Renoir's style, group enjoying the late afternoon outdoors, faces smiling gently, gestures expressive but unforced, soft gold light filtering through tree branches, colors rich but painterly, not photorealistic, table adorned with a few seasonal fruits and glassware, river behind glows subtly in the distance, background nature in harmony, with blooming details slightly abstracted, brushwork warm and textured, atmosphere of full presence and mutual enjoyment – painterly, poetic and balanced)",
+              info: "Lebensfreude im Überfluss ist die positive, lebensbejahende Emotion von Flora. Das Bild strahlt Freude und Energie aus und zeigt sich, wenn du Flora's Blätter sanft berührst.",
+              description:
+                "Die Pflanze hat unterschiedliche Emotionen, die sie je nach Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist zärtlich, so zeigt sie ihre Freude und Glückseligkeit. Zückst du jedoch aber dein Handy und provozierst sie, so zeigt sie ihre verletzte und traurige Seite.",
+            },
+          ];
+          const emotion = emotions[emotionCurrent];
+          return (
+            <div className="flex flex-col md:flex-row items-center md:gap-10 my-0 relative">
+              {/* Image section */}
+              <div className="w-full md:w-1/2 flex flex-col items-center justify-center">
+                {/* Image and overlay in fixed aspect ratio container */}
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+                  className="w-full md:pt-10 md:max-w-full"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-            </motion.div>
-            <motion.h2
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.36, ease: "easeOut" }}
-              className="text-black font-bold text-xl pt-5"
-              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
-            >
-              Wie wird diese Emotion ausgelöst?
-            </motion.h2>
-            <motion.span
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.39, ease: "easeOut" }}
-              style={{
-                color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
-              }}
-            >
-              (placeholder) wird ausgelöst, wenn du placeholder-text.
-            </motion.span>
-          </div>
-        </div>
+                  <div className="relative w-full aspect-[383/500]">
+                    <Image
+                      src={emotion.image}
+                      alt={emotion.alt}
+                      fill
+                      className="rounded-xs object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    {/* White box overlay */}
+                    <div
+                      className="absolute bottom-40 md:bottom-60 bg-white bg-opacity-95 px-8 py-6 flex flex-col items-start w-[90%] md:w-auto"
+                      style={{ minWidth: 220, maxWidth: 340 }}
+                    >
+                      <span className="font-bold text-2xl md:text-3xl text-black leading-tight">
+                        {emotion.title}
+                      </span>
+                      <span className="text-black text-base md:text-lg mt-1 font-normal">
+                        {emotion.subtitle}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+                {/* Carousel controls always below image, never moving */}
+                <div className="flex gap-2 mt-6 items-center justify-center">
+                  <button
+                    aria-label="Vorherige Emotion"
+                    className="rounded-full bg-zinc-200 p-2 hover:bg-zinc-300 transition-colors cursor-pointer"
+                    onClick={() => {
+                      setEmotionCurrent(
+                        (emotionCurrent - 1 + emotions.length) % emotions.length
+                      );
+                      setEmotionShowFullPrompt(false);
+                    }}
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      fill="none"
+                      stroke="black"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </button>
+                  {emotions.map((e, idx) => (
+                    <button
+                      key={e.name}
+                      aria-label={`Emotion ${e.name}`}
+                      className={`w-3 h-3 rounded-full hover:cursor-pointer ${
+                        idx === emotionCurrent ? "bg-zinc-800" : "bg-zinc-300"
+                      } transition-colors`}
+                      onClick={() => {
+                        setEmotionCurrent(idx);
+                        setEmotionShowFullPrompt(false);
+                      }}
+                    />
+                  ))}
+                  <button
+                    aria-label="Nächste Emotion"
+                    className="rounded-full bg-zinc-200 p-2 hover:bg-zinc-300 transition-colors cursor-pointer"
+                    onClick={() => {
+                      setEmotionCurrent((emotionCurrent + 1) % emotions.length);
+                      setEmotionShowFullPrompt(false);
+                    }}
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      fill="none"
+                      stroke="black"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              {/* Text section */}
+              <div className="flex flex-col pt-10 md:pt-0 w-full md:w-1/2">
+                <motion.h1
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
+                  className="text-black font-bold text-4xl"
+                  style={{
+                    color: theme === "dark" ? "#fff" : "var(--foreground)",
+                  }}
+                >
+                  Emotionen
+                </motion.h1>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.7, ease: "easeOut" }}
+                  className="w-full h-[3px] mt-2 max-w-[1168px]"
+                />
+                <motion.span
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.21, ease: "easeOut" }}
+                  className="text-[#3a3a3a] pt-10"
+                  style={{
+                    color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                  }}
+                >
+                  {emotion.description}
+                </motion.span>
+                <motion.h2
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.24, ease: "easeOut" }}
+                  className="text-black text-xl font-bold pt-10"
+                  style={{
+                    color: theme === "dark" ? "#fff" : "var(--foreground)",
+                  }}
+                >
+                  Aktuelle Emotion:
+                </motion.h2>
+                <motion.h2
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.27, ease: "easeOut" }}
+                  className="text-xl text-black"
+                  style={{
+                    color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                  }}
+                >
+                  {emotion.name}
+                </motion.h2>
+                <motion.h2
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+                  className="text-black font-bold text-xl pt-10"
+                  style={{
+                    color: theme === "dark" ? "#fff" : "var(--foreground)",
+                  }}
+                >
+                  Benutzter prompt
+                </motion.h2>
+                {/* Collapsible prompt span */}
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.33, ease: "easeOut" }}
+                  className="relative"
+                >
+                  <span
+                    className={`block mt-2 rounded-md bg-zinc-100 p-4 font-mono text-base text-zinc-800 transition-all duration-300 ${
+                      emotionShowFullPrompt
+                        ? ""
+                        : "max-h-[3.5em] overflow-hidden"
+                    } relative`}
+                  >
+                    {emotion.prompt}
+                    {!emotionShowFullPrompt && (
+                      <span className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-zinc-100 to-transparent pointer-events-none" />
+                    )}
+                  </span>
+                  <button
+                    type="button"
+                    aria-label={
+                      emotionShowFullPrompt
+                        ? "Weniger anzeigen"
+                        : "Mehr anzeigen"
+                    }
+                    className="absolute bottom-2 right-2 bg-white text-zinc-800 rounded-full p-1 shadow hover:bg-zinc-200 transition-colors"
+                    onClick={() => setEmotionShowFullPrompt((v) => !v)}
+                  >
+                    <svg
+                      className={`w-5 h-5 transition-transform duration-300 ${
+                        emotionShowFullPrompt ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="black"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                </motion.div>
+                <motion.h2
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.36, ease: "easeOut" }}
+                  className="text-black font-bold text-xl pt-5"
+                  style={{
+                    color: theme === "dark" ? "#fff" : "var(--foreground)",
+                  }}
+                >
+                  Weitere Informationen
+                </motion.h2>
+                <motion.span
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.39, ease: "easeOut" }}
+                  style={{
+                    color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                  }}
+                >
+                  {emotion.info}
+                </motion.span>
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       <motion.div
@@ -1158,7 +1282,7 @@ export default function Home() {
               transition={{ duration: 0.7, delay: 0.27, ease: "easeOut" }}
               className="text-[#3a3a3a] text-lg text-justify"
               style={{
-                color: theme === "dark" ? "#fff" : "var(--foreground)",
+                color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
               }}
             >
               Wir bedanken uns bei allen, die uns beim Umsetzten dieses Projekts
