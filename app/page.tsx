@@ -4,14 +4,123 @@ import { Lexend } from "next/font/google";
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "motion/react";
+import { useTheme } from "./Components/ThemeProvider";
 
 const lexend = Lexend({ subsets: ["latin"] });
 
 export default function Home() {
   const [showFullPrompt, setShowFullPrompt] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   return (
-    <div className={`min-h-screen p-8 bg-white ${lexend.className}`}>
+    <div
+      className={`min-h-screen p-8 ${lexend.className}`}
+      style={{
+        background: "var(--background)",
+        color: "var(--foreground)",
+        transition: "background 0.4s, color 0.4s",
+      }}
+    >
+      {/* Floating theme toggle button */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 1.5 }}
+        className="fixed bottom-6 left-6 z-50"
+      >
+        <button
+          aria-label={
+            theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+          }
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-500"
+          style={{
+            background: theme === "dark" ? "#222" : "#fff",
+            color: theme === "dark" ? "#ffe066" : "#222",
+            boxShadow:
+              theme === "dark"
+                ? "0 4px 24px 0 rgba(0,0,0,0.7)"
+                : "0 4px 24px 0 rgba(0,0,0,0.15)",
+            border:
+              theme === "dark" ? "1.5px solid #ffe066" : "1.5px solid #222",
+            cursor: "pointer",
+            transition:
+              "background 0.4s, color 0.4s, box-shadow 0.4s, border 0.4s",
+          }}
+        >
+          {theme === "dark" ? (
+            // Moon icon
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
+            </svg>
+          ) : (
+            // Sun icon
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="5" />
+              <path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 6.95-1.41-1.41M6.34 6.34 4.93 4.93m12.02 0-1.41 1.41M6.34 17.66l-1.41 1.41" />
+            </svg>
+          )}
+        </button>
+      </motion.div>
+      {/* Back to the top button */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 1.5 }}
+        className="fixed bottom-6 right-6 z-50"
+      >
+        <button
+          aria-label="Back to the top"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-500"
+          style={{
+            background: theme === "dark" ? "#222" : "#fff",
+            color: theme === "dark" ? "#ffe066" : "#222",
+            boxShadow:
+              theme === "dark"
+                ? "0 4px 24px 0 rgba(0,0,0,0.7)"
+                : "0 4px 24px 0 rgba(0,0,0,0.15)",
+            border:
+              theme === "dark" ? "1.5px solid #ffe066" : "1.5px solid #222",
+            cursor: "pointer",
+            transition:
+              "background 0.4s, color 0.4s, box-shadow 0.4s, border 0.4s",
+          }}
+        >
+          {/* Up arrow icon */}
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 19V5" />
+            <path d="M5 12l7-7 7 7" />
+          </svg>
+        </button>
+      </motion.div>
       {/* Navbar */}
       <motion.nav
         initial={{ opacity: 0, y: 40 }}
@@ -25,16 +134,19 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.7, delay: 0.05, ease: "easeOut" }}
-          className="text-black font-extralight text-center text-2xl pt-2"
+          className="font-extralight text-center text-2xl pt-2"
+          style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
         >
           Climate & Ressources
         </motion.h1>
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
-          className="mx-auto w-full max-w-[1168px] h-[1px] bg-black mt-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="w-full h-[3px] mt-3 mx-auto max-w-[1168px]"
+          style={{
+            background: theme === "dark" ? "#fff" : "var(--foreground)",
+          }}
         />
       </motion.nav>
 
@@ -62,7 +174,7 @@ export default function Home() {
             style={{ position: "absolute", inset: 0 }}
           >
             <Image
-              src="/carousel/carousel_1.png"
+              src="/images/hero_image.png"
               alt="Climate and Resources - Flora.exe"
               fill
               className="object-cover rounded-xs"
@@ -95,17 +207,20 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
               className="text-black text-left text-4xl font-bold"
+              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
             >
               Projekt-
               <br />
               verantwortliche
             </motion.h1>
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.18, ease: "easeOut" }}
-              className="w-full h-[3px] bg-black mt-3 mb-5 max-w-[1168px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="w-full h-[3px] mt-3 max-w-[1168px]"
+              style={{
+                background: theme === "dark" ? "#fff" : "var(--foreground)",
+              }}
             />
             <motion.span
               initial={{ opacity: 0, y: 40 }}
@@ -113,6 +228,9 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
               className="text-[#6b6b6b] text-left text-lg"
+              style={{
+                color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+              }}
             >
               MUC.DAI: Informatik & Design 4. Sem // Projektmodul KI
             </motion.span>
@@ -122,12 +240,16 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
               className="text-black pt-10 pb-40 text-xl md:pt-20 md:pb-20"
+              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
             >
               <motion.li
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.22, ease: "easeOut" }}
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Sven Fydrich
               </motion.li>
@@ -136,6 +258,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.24, ease: "easeOut" }}
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Gloria Bichler
               </motion.li>
@@ -144,6 +269,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.26, ease: "easeOut" }}
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Florian von Basse
               </motion.li>
@@ -152,6 +280,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.28, ease: "easeOut" }}
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Emanuel Ostertag
               </motion.li>
@@ -160,6 +291,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Katharina Brandtner
               </motion.li>
@@ -183,14 +317,26 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.34, ease: "easeOut" }}
-              className="text-[#363636] mt-5"
+              className="text-[#363636]"
+              style={{
+                color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+              }}
             >
               (Links nach rechts) Gloria, Katharina, Emanuel, Sven, Florian
             </motion.p>
           </motion.div>
 
           {/* Vertical divider - hidden on mobile */}
-          <div className="hidden md:block w-[3px] h-[941px] bg-black" />
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.41, ease: "easeOut" }}
+            className="hidden md:flex w-[3px] self-stretch mx-2"
+            style={{
+              background: theme === "dark" ? "#fff" : "var(--foreground)",
+            }}
+          />
 
           {/* Right column - 10/17 width */}
           <motion.div
@@ -221,15 +367,20 @@ export default function Home() {
                   viewport={{ once: true, amount: 0.1 }}
                   transition={{ duration: 0.7, delay: 0.16, ease: "easeOut" }}
                   className="text-black font-bold text-4xl text-left md:text-right"
+                  style={{
+                    color: theme === "dark" ? "#fff" : "var(--foreground)",
+                  }}
                 >
                   Flora.exe
                 </motion.h1>
                 <motion.div
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.7, delay: 0.18, ease: "easeOut" }}
-                  className="w-full h-[3px] bg-black mt-3 max-w-[1168px]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.7, ease: "easeOut" }}
+                  className="w-full h-[3px] mt-3 max-w-[1168px]"
+                  style={{
+                    background: theme === "dark" ? "#fff" : "var(--foreground)",
+                  }}
                 />
                 <motion.span
                   initial={{ opacity: 0, y: 40 }}
@@ -237,6 +388,9 @@ export default function Home() {
                   viewport={{ once: true, amount: 0.1 }}
                   transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
                   className="text-[#3a3a3a] text-justify text-lg mt-5"
+                  style={{
+                    color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                  }}
                 >
                   Flora.exe besteht aus einer Pflanze mit Sensoren, einem
                   Gemälde, einem Fernseher und einem QR-Code der zu dieser
@@ -274,15 +428,20 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.26, ease: "easeOut" }}
                 className="text-black font-bold text-4xl"
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Konzept
               </motion.h1>
               <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.7, delay: 0.28, ease: "easeOut" }}
-                className="w-full h-[3px] bg-black mt-3 max-w-[1168px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
+                className="w-full h-[3px] mt-3 max-w-[1168px]"
+                style={{
+                  background: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               />
               <motion.p
                 initial={{ opacity: 0, y: 40 }}
@@ -290,6 +449,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
                 className="text-[#3a3a3a] text-justify md: text-lg mt-5"
+                style={{
+                  color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                }}
               >
                 Flora.exe handelt vom Ringen um Aufmerksamkeit. Wir schenken sie
                 unseren Handys, der Technik, der Onlinewelt und vergessen dabei
@@ -320,17 +482,37 @@ export default function Home() {
         transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
         className="mt-30 flex flex-col items-start md:items-center md:mt-100"
       >
-        <h1 className="text-black text-left text-4xl md:text-center font-bold">
+        <h1
+          className="text-black text-left text-4xl md:text-center font-bold"
+          style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
+        >
           Interaktion
         </h1>
-        <div className="w-full h-[3px] bg-black mt-3 max-w-[1168px]" />
-        <span className="text-[#3a3a3a] text-justify text-lg mt-5 pl-0 pr-0 md:text-center md:max-w-[1168px]">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="w-full h-[3px] mt-3 max-w-[1168px]"
+          style={{
+            background: theme === "dark" ? "#fff" : "var(--foreground)",
+          }}
+        />
+        <motion.p
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+          className="text-[#3a3a3a] text-justify text-lg mt-5 pl-0 pr-0 md:text-center md:max-w-[1168px]"
+          style={{
+            color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+          }}
+        >
           Was hat es mit der Pflanze auf sich? Wie kann ich mit ihr
           interagieren? Das ist unkomplizierter als es erscheinen mag, denn die
           Pflanze reagiert auf bestimmte äußere Reize. Die folgenden Aktionen
           wirken sich direkt auf die Pflanze, und somit auf das generierte Bild
           aus.
-        </span>
+        </motion.p>
       </motion.div>
 
       {/* Banner section */}
@@ -385,11 +567,13 @@ export default function Home() {
       {/* Emotionen section */}
       <div className="mx-auto w-full max-w-[1168px] mt-30 md:mt-100">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.7, delay: 0.05, ease: "easeOut" }}
-          className="w-full h-[3px] bg-black mt-3 max-w-[1168px]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="w-full h-[3px] max-w-[1168px] mb-5"
+          style={{
+            background: theme === "dark" ? "#fff" : "var(--foreground)",
+          }}
         />
         <div className="flex flex-col md:flex-row items-center md:gap-10 my-0">
           {/* Image section */}
@@ -419,15 +603,15 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
               className="text-black font-bold text-4xl"
+              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
             >
               Emotionen
             </motion.h1>
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.7, delay: 0.18, ease: "easeOut" }}
-              className="w-full h-[3px] bg-black mt-2 max-w-[1168px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="w-full h-[3px] mt-2 max-w-[1168px]"
             />
             <motion.span
               initial={{ opacity: 0, y: 40 }}
@@ -435,6 +619,9 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.21, ease: "easeOut" }}
               className="text-[#3a3a3a] pt-10"
+              style={{
+                color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+              }}
             >
               Die Pflanze hat unterschiedliche Emotionen, die sie je nach
               Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist
@@ -448,6 +635,7 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.24, ease: "easeOut" }}
               className="text-black text-xl font-bold pt-10"
+              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
             >
               Aktuelle Emotion:
             </motion.h2>
@@ -457,6 +645,9 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.27, ease: "easeOut" }}
               className="text-xl text-black"
+              style={{
+                color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+              }}
             >
               (placeholder)
             </motion.h2>
@@ -466,6 +657,7 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
               className="text-black font-bold text-xl pt-10"
+              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
             >
               Benutzter prompt
             </motion.h2>
@@ -481,11 +673,6 @@ export default function Home() {
                 className={`block mt-2 rounded-md bg-zinc-100 p-4 font-mono text-base text-zinc-800 transition-all duration-300 ${
                   showFullPrompt ? "" : "max-h-[3.5em] overflow-hidden"
                 } relative`}
-                style={{
-                  WebkitLineClamp: showFullPrompt ? "unset" : 2,
-                  display: "-webkit-box",
-                  WebkitBoxOrient: "vertical",
-                }}
               >
                 expressionist oil painting in the style of Edvard Munch&apos;s
                 &apos;The Scream&apos;, figure collapsing inward, mouth open in
@@ -504,7 +691,7 @@ export default function Home() {
                 aria-label={
                   showFullPrompt ? "Weniger anzeigen" : "Mehr anzeigen"
                 }
-                className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow hover:bg-zinc-200 transition-colors"
+                className="absolute bottom-2 right-2 bg-white text-zinc-800 rounded-full p-1 shadow hover:bg-zinc-200 transition-colors"
                 onClick={() => setShowFullPrompt((v) => !v)}
               >
                 <svg
@@ -531,6 +718,7 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.36, ease: "easeOut" }}
               className="text-black font-bold text-xl pt-5"
+              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
             >
               Wie wird diese Emotion ausgelöst?
             </motion.h2>
@@ -539,7 +727,9 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.39, ease: "easeOut" }}
-              className="text-[#3a3a3a] pt-5 text-justify text-lg"
+              style={{
+                color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+              }}
             >
               (placeholder) wird ausgelöst, wenn du placeholder-text.
             </motion.span>
@@ -547,7 +737,15 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="hidden md:flex w-full h-[3px] bg-black max-w-[1168px] mx-auto mt-10" />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="w-full h-[3px] mt-10 max-w-[1168px] mx-auto"
+        style={{
+          background: theme === "dark" ? "#fff" : "var(--foreground)",
+        }}
+      />
 
       {/* Funktionsweise section */}
       <div className="mx-auto w-full max-w-[1168px] mt-30 md:mt-90">
@@ -559,15 +757,18 @@ export default function Home() {
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.7, delay: 0.05, ease: "easeOut" }}
             className="text-black font-bold text-4xl"
+            style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
           >
             Funktionsweise
           </motion.h1>
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.7, delay: 0.08, ease: "easeOut" }}
-            className="w-full h-[3px] bg-black mt-3 max-w-[1168px]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="w-full h-[3px] mt-3 max-w-[1168px]"
+            style={{
+              background: theme === "dark" ? "#fff" : "var(--foreground)",
+            }}
           />
           <motion.span
             initial={{ opacity: 0, y: 40 }}
@@ -575,6 +776,9 @@ export default function Home() {
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.7, delay: 0.11, ease: "easeOut" }}
             className="text-[#3a3a3a] mt-6 text-justify"
+            style={{
+              color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+            }}
           >
             Da Pflanzen normalerweise nicht mit uns kommunizieren können, nutzt
             Flora mehrere Medien um dieses Hindernis zu überwinden. Im
@@ -599,6 +803,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.17, ease: "easeOut" }}
                 className="text-black font-bold text-4xl md:text-4xl"
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Input
               </motion.h2>
@@ -608,6 +815,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
                 className="text-black text-2xl font-bold pt-5"
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Sehen
               </motion.h2>
@@ -617,6 +827,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.23, ease: "easeOut" }}
                 className="text-[#3a3a3a] text-justify"
+                style={{
+                  color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                }}
               >
                 Damit Flora sehen kann, verwendet sie eine digitale Kamera. So
                 kann sie ihre Umgebung wahrnehmen und erkennt, wer ein Handy in
@@ -637,6 +850,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.29, ease: "easeOut" }}
                 className="text-black text-2xl font-bold"
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Fühlen
               </motion.h2>
@@ -646,6 +862,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.32, ease: "easeOut" }}
                 className="text-[#3a3a3a] text-justify"
+                style={{
+                  color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                }}
               >
                 Flora ist zwar ziemlich empfindlich, aber freut sich wenn du sie
                 zärtlich berührst. Mithilfe eines Midi-Controllers und ein wenig
@@ -656,7 +875,16 @@ export default function Home() {
           </div>
 
           {/* Vertical divider */}
-          <div className="hidden md:flex w-[3px] bg-black self-stretch mx-2" />
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.41, ease: "easeOut" }}
+            className="hidden md:flex w-[3px] self-stretch mx-2"
+            style={{
+              background: theme === "dark" ? "#fff" : "var(--foreground)",
+            }}
+          />
 
           {/* Right column: Output */}
           <div className="flex flex-col w-full md:w-1/2 gap-10 md:text-right">
@@ -674,6 +902,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.38, ease: "easeOut" }}
                 className="text-black font-bold text-4xl md:text-4xl mt-10 md:mt-0"
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Output
               </motion.h2>
@@ -683,6 +914,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.41, ease: "easeOut" }}
                 className="text-black text-2xl font-bold pt-5 md:text-right"
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Sprechen
               </motion.h2>
@@ -692,6 +926,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.44, ease: "easeOut" }}
                 className="text-[#3a3a3a] text-justify md:text-right block"
+                style={{
+                  color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                }}
               >
                 Um ihre Emotionen und Wünsche ausdrücken zu können, nutzt Flora
                 einen alten Röhrenfernseher. Dadurch erhält sie eine Stimme,
@@ -712,6 +949,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
                 className="text-black text-2xl font-bold md:text-right"
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Ausdrücken
               </motion.h2>
@@ -721,6 +961,9 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.7, delay: 0.53, ease: "easeOut" }}
                 className="text-[#3a3a3a] text-justify md:text-right block"
+                style={{
+                  color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                }}
               >
                 Da bildliche Sprache einfacher verständlich ist, und mehr
                 Interpretationsfreiraum bietet, nutzt Flora ein digitales
@@ -743,15 +986,18 @@ export default function Home() {
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.7, delay: 0.05, ease: "easeOut" }}
             className="text-black text-center text-4xl font-bold"
+            style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
           >
             Danksagung
           </motion.h1>
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.7, delay: 0.08, ease: "easeOut" }}
-            className="w-full h-[3px] bg-black mt-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="w-full h-[3px] mt-3 max-w-[1168px]"
+            style={{
+              background: theme === "dark" ? "#fff" : "var(--foreground)",
+            }}
           />
         </div>
         <div className="flex flex-col-reverse md:flex-row py-10 gap-10">
@@ -762,12 +1008,16 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.11, ease: "easeOut" }}
               className="flex flex-col-reverse md:flex-col text-black text-lg space-y-2 text-center md:text-left"
+              style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
             >
               <motion.li
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.13, ease: "easeOut" }}
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Sven Fydrich
               </motion.li>
@@ -776,6 +1026,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Gloria Bichler
               </motion.li>
@@ -784,6 +1037,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.17, ease: "easeOut" }}
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Florian von Basse
               </motion.li>
@@ -792,6 +1048,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.19, ease: "easeOut" }}
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Emanuel Ostertag
               </motion.li>
@@ -800,6 +1059,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.6, delay: 0.21, ease: "easeOut" }}
+                style={{
+                  color: theme === "dark" ? "#fff" : "var(--foreground)",
+                }}
               >
                 Katharina Brandtner
               </motion.li>
@@ -812,10 +1074,10 @@ export default function Home() {
               className="flex justify-center md:hidden mt-2"
             >
               <Image
-                src="/flora.png"
-                alt="Totaler Zerfall"
-                width={50}
-                height={550}
+                src="/images/flora_logo.png"
+                alt="Flora"
+                width={80}
+                height={80}
                 className="rounded-full"
               />
             </motion.div>
@@ -827,6 +1089,9 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.27, ease: "easeOut" }}
               className="text-[#3a3a3a] text-lg text-justify"
+              style={{
+                color: theme === "dark" ? "#fff" : "var(--foreground)",
+              }}
             >
               Wir bedanken uns bei allen, die uns beim Umsetzten dieses Projekts
               unterstützt, und somit die Fertigstellung der Kunstinstallation
@@ -842,6 +1107,9 @@ export default function Home() {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
               className="text-[#3a3a3a] text-lg text-justify"
+              style={{
+                color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+              }}
             >
               Dieses Projekt entstand im Rahmen des Projektmoduls
               &apos;Künstliche Intelligenz&apos; im 4. Semester des Studiengangs
