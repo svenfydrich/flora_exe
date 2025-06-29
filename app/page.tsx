@@ -523,52 +523,113 @@ export default function Home() {
       </motion.div>
 
       {/* Banner section */}
-      <div className="hidden md:block">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.7, delay: 0.05, ease: "easeOut" }}
-          className="flex flex-col items-center pt-10"
-        >
-          <Image
-            src="/banners/nähe_banner.png"
-            alt="Nähe Banner"
-            width={1168}
-            height={259}
-            className="rounded-xs"
-          />
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-          className="flex flex-col items-center pt-10"
-        >
-          <Image
-            src="/banners/ablenkung_banner.png"
-            alt="Ablenkung Banner"
-            width={1168}
-            height={259}
-            className="rounded-xs"
-          />
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.7, delay: 0.25, ease: "easeOut" }}
-          className="flex flex-col items-center pt-10"
-        >
-          <Image
-            src="/banners/stille_banner.png"
-            alt="Stille Banner"
-            width={1168}
-            height={259}
-            className="rounded-xs"
-          />
-        </motion.div>
+      <div className="w-full">
+        {[
+          {
+            src: "/banners/Nähe.png",
+            alt: "Nähe Banner",
+            heading: "Nähe",
+            subheading: "Du näherst dich – das Bild wird lebendig.",
+            description:
+              "Die Pflanze spürt deine Präsenz. Formen fließen, Farben leuchten – als würde die Natur atmen.",
+          },
+          {
+            src: "/banners/Ablenkung.png",
+            alt: "Ablenkung Banner",
+            heading: "Ablenkung",
+            subheading: "Du greifst zum Handy – das Bild zerfällt.",
+            description:
+              "Dein Fokus wandert – und mit ihm zerbricht die Verbindung. Das Bild wird stumm. Die Natur auch.",
+          },
+          {
+            src: "/banners/Stille.png",
+            alt: "Stille Banner",
+            heading: "Stille",
+            subheading: "Du bleibst still – die Pflanze bleibt es auch.",
+            description:
+              "In der Ruhe liegt die Kraft. Die Pflanze verharrt, das Bild bleibt ruhig und unverändert.",
+          },
+        ].map((banner, i) => (
+          <motion.div
+            key={banner.src}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{
+              duration: 0.7,
+              delay: 0.05 + i * 0.1,
+              ease: "easeOut",
+            }}
+            className="flex flex-col items-center pt-10"
+          >
+            <div
+              className="
+                w-full
+                max-w-[1168px]
+                max-h-[300px]
+                overflow-hidden
+                relative
+                rounded-xs
+                aspect-[2/3]
+                md:aspect-[1168/259]
+                md:max-h-none
+              "
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.7, delay: 0.07 }}
+                className="absolute inset-0 w-full h-full"
+              >
+                <Image
+                  src={banner.src}
+                  alt={banner.alt}
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 1168px"
+                  priority={i === 0}
+                />
+              </motion.div>
+              {/* Overlay text */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="absolute inset-0 flex flex-col justify-end p-6 md:p-5 bg-gradient-to-t from-black/60 via-black/30 to-transparent"
+              >
+                <motion.h2
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.15 }}
+                  className="text-white text-4xl font-bold mb-1 drop-shadow-md"
+                >
+                  {banner.heading}
+                </motion.h2>
+                <motion.p
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.18 }}
+                  className="text-white text-lg md:text-xl font-semibold mb-2 drop-shadow-md"
+                >
+                  {banner.subheading}
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.7, delay: 0.21 }}
+                  className="text-white text-base md:text-lg font-normal drop-shadow-md"
+                >
+                  {banner.description}
+                </motion.p>
+              </motion.div>
+            </div>
+          </motion.div>
+        ))}
       </div>
 
       {/* Emotionen section */}
