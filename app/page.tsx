@@ -2,7 +2,7 @@
 
 import { Lexend } from "next/font/google";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "motion/react";
 import { useTheme } from "./Components/ThemeProvider";
 
@@ -13,6 +13,78 @@ export default function Home() {
   const [emotionCurrent, setEmotionCurrent] = useState(0);
   const [emotionShowFullPrompt, setEmotionShowFullPrompt] = useState(false);
   const { theme, setTheme } = useTheme();
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (isVideoModalOpen && videoRef.current) {
+      const video = videoRef.current;
+      // Try to play and request fullscreen
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          // TypeScript: use type assertions for vendor-prefixed fullscreen methods
+          const videoEl = video as HTMLVideoElement & {
+            webkitRequestFullscreen?: () => Promise<void> | void;
+            msRequestFullscreen?: () => Promise<void> | void;
+          };
+          if (video.requestFullscreen) {
+            video.requestFullscreen();
+          } else if (videoEl.webkitRequestFullscreen) {
+            videoEl.webkitRequestFullscreen();
+          } else if (videoEl.msRequestFullscreen) {
+            videoEl.msRequestFullscreen();
+          }
+        });
+      }
+    }
+  }, [isVideoModalOpen]);
+
+  // Listen for fullscreen changes
+  useEffect(() => {
+    function handleFullscreenChange() {
+      const doc = document as Document & {
+        webkitFullscreenElement?: Element;
+        msFullscreenElement?: Element;
+      };
+      const fullscreenElement =
+        doc.fullscreenElement ||
+        doc.webkitFullscreenElement ||
+        doc.msFullscreenElement;
+      setIsFullscreen(!!fullscreenElement);
+    }
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    document.addEventListener("msfullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener(
+        "webkitfullscreenchange",
+        handleFullscreenChange
+      );
+      document.removeEventListener(
+        "msfullscreenchange",
+        handleFullscreenChange
+      );
+    };
+  }, []);
+
+  // Helper to exit fullscreen
+  const exitFullscreen = () => {
+    const doc = document as Document & {
+      webkitExitFullscreen?: () => void;
+      msExitFullscreen?: () => void;
+      fullscreenElement?: Element;
+    };
+    if (doc.fullscreenElement) {
+      document.exitFullscreen();
+    } else if (doc.webkitExitFullscreen) {
+      doc.webkitExitFullscreen();
+    } else if (doc.msExitFullscreen) {
+      doc.msExitFullscreen();
+    }
+  };
 
   return (
     <div
@@ -190,8 +262,94 @@ export default function Home() {
               priority
             />
           </motion.div>
+          {/* Play button */}
+          <motion.button
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 transition-all duration-200 focus:outline-none rounded-full w-16 h-16 flex items-center justify-center group hover:scale-110`}
+            style={{
+              cursor: "pointer",
+              background: theme === "dark" ? "#222" : "#fff",
+              opacity: 0.8,
+              transition: "background 0.4s, opacity 0.4s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.8")}
+            onClick={() => setIsVideoModalOpen(true)}
+          >
+            <svg
+              width="44"
+              height="44"
+              viewBox="0 0 44 44"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polygon
+                points="15,10 34,22 15,34"
+                fill={theme === "dark" ? "#ffe066" : "#222"}
+              />
+            </svg>
+          </motion.button>
         </motion.div>
       </motion.div>
+
+      {/* Video modal */}
+      {isVideoModalOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+        >
+          {/* Close button outside video, in modal overlay */}
+          {!isFullscreen && (
+            <button
+              className="fixed top-8 right-8 z-[60] text-white hover:text-white focus:outline-none bg-black/60 rounded-full p-2"
+              onClick={() => {
+                setIsVideoModalOpen(false);
+                exitFullscreen();
+              }}
+              style={{ pointerEvents: "auto" }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-7 w-7"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#fff"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.3 }}
+            className="flex items-center justify-center"
+          >
+            <div className="bg-black w-[80vw] max-w-2xl aspect-video flex items-center justify-center">
+              <video
+                ref={videoRef}
+                src="/videos/Flora%20EXE%20Trailer%20July%2006%202025.mp4"
+                controls
+                autoPlay
+                className="w-full h-full object-contain rounded"
+                style={{ background: "black" }}
+              />
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Main section */}
       <motion.div
