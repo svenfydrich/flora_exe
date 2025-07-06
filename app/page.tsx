@@ -816,7 +816,7 @@ export default function Home() {
                 "expressionist oil painting in the style of Edvard Munch's 'The Scream', figure collapsing inward, mouth open in silent scream, colors shattered into shards of deep crimson and grey, sky disintegrated, bridge broken in places, figure semi-transparent as if fading, canvas cracked and burned, atmosphere of extreme inner collapse and existential panic, as if the natural world itself is crying out after being utterly ignored and consumed by digital distraction.",
               info: 'Totaler Zerfall ist die negative, traurige beziehungsweise besonders dramatische Emotion von Flora. Das generierte Bild basiert auf dem Gemälde "The Scream" von Edvard Munch. Flora zeigt diese Emotion, wenn du mit deinem Smartphone ein Bild von ihr machst.',
               description:
-                "Die Pflanze hat unterschiedliche Emotionen, die sie je nach Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist zärtlich, so zeigt sie ihre Freude und Glückseligkeit. Zückst du jedoch aber dein Handy und provozierst sie, so zeigt sie ihre verletzte und traurige Seite.",
+                "Die Pflanze hat unterschiedliche Emotionen, die sie je nach Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist zärtlich, so zeigt sie ihre Freude und Glückseligkeit. Zückst du jedoch dein Handy und provozierst sie, so zeigt sie ihre verletzte und traurige Seite.",
             },
             {
               name: "Stille",
@@ -1315,9 +1315,9 @@ export default function Home() {
                   color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
                 }}
               >
-                Da bildliche Sprache einfacher verständlich ist, und mehr
+                Da bildliche Sprache einfacher verständlich ist und mehr
                 Interpretationsfreiraum bietet, nutzt Flora ein digitales
-                Gemälde auf welches sie malerische Kunstwerke erstellen kann, um
+                Gemälde, auf dem sie malerische Kunstwerke erstellen kann, um
                 ihre Gefühle besser darstellen zu können.
               </motion.span>
             </motion.div>
@@ -1443,12 +1443,12 @@ export default function Home() {
                 color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
               }}
             >
-              Wir bedanken uns bei allen, die uns beim Umsetzten dieses Projekts
-              unterstützt, und somit die Fertigstellung der Kunstinstallation
+              Wir bedanken uns bei allen, die uns beim Umsetzen dieses Projekts
+              unterstützt und somit die Fertigstellung der Kunstinstallation
               ermöglicht haben. Ein besonderer Dank gilt unseren Dozenten Yves
-              Peitzner und Prof. Dr. Hanna Moser, sowie der Hochschule München
+              Peitzner und Prof. Dr. Hanna Moser sowie der Hochschule München
               für das Bereitstellen der finanziellen Mittel und der kreativen
-              Freiheit als auch das kontinuierliche Feedback, das uns bei der
+              Freiheit sowie das kontinuierliche Feedback, das uns bei der
               Umsetzung von Flora.exe geholfen hat.
             </motion.span>
             <motion.span
