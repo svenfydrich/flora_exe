@@ -711,7 +711,7 @@ export default function Home() {
               "Dein Fokus wandert – und mit ihm zerbricht die Verbindung. Das Bild wird stumm. Die Natur auch.",
           },
           {
-            src: "/banners/Stille_banner.png",
+            src: "/banners/Stille.png",
             alt: "Stille Banner",
             heading: "Stille",
             subheading: "Du bleibst still – die Pflanze bleibt es auch.",
