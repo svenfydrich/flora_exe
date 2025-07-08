@@ -4,6 +4,7 @@ import { Lexend } from "next/font/google";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
 import { useTheme } from "./Components/ThemeProvider";
 
 const lexend = Lexend({ subsets: ["latin"] });
@@ -11,6 +12,7 @@ const lexend = Lexend({ subsets: ["latin"] });
 export default function Home() {
   // Carousel state for Emotionen section
   const [emotionCurrent, setEmotionCurrent] = useState(0);
+  const [emotionDirection, setEmotionDirection] = useState(1); // 1 for next, -1 for prev
   const [emotionShowFullPrompt, setEmotionShowFullPrompt] = useState(false);
   const { theme, setTheme } = useTheme();
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -84,6 +86,13 @@ export default function Home() {
     } else if (doc.msExitFullscreen) {
       doc.msExitFullscreen();
     }
+  };
+
+  // Framer Motion variants for direction-aware animation
+  const carouselVariants = {
+    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 40 : -40 }),
+    center: { opacity: 1, x: 0 },
+    exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -40 : 40 }),
   };
 
   return (
@@ -702,7 +711,7 @@ export default function Home() {
               "Dein Fokus wandert – und mit ihm zerbricht die Verbindung. Das Bild wird stumm. Die Natur auch.",
           },
           {
-            src: "/banners/Stille.png",
+            src: "/banners/Stille_banner.png",
             alt: "Stille Banner",
             heading: "Stille",
             subheading: "Du bleibst still – die Pflanze bleibt es auch.",
@@ -820,7 +829,7 @@ export default function Home() {
             },
             {
               name: "Stille",
-              image: "/carousel/Stille.png",
+              image: "/carousel/Stille_neu.png",
               alt: "Stille",
               title: "Stille",
               subtitle: "Mönch am Meer – Caspar David Friedrich",
@@ -848,42 +857,52 @@ export default function Home() {
             <div className="flex flex-col md:flex-row items-center md:gap-10 my-0 relative">
               {/* Image section */}
               <div className="w-full md:w-1/2 flex flex-col items-center justify-center">
-                {/* Image and overlay in fixed aspect ratio container */}
-                <motion.div
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
-                  className="w-full md:pt-10 md:max-w-full"
+                {/* AnimatePresence for image/overlay */}
+                <AnimatePresence
+                  mode="wait"
+                  initial={false}
+                  custom={emotionDirection}
                 >
-                  <div className="relative w-full aspect-[383/500]">
-                    <Image
-                      src={emotion.image}
-                      alt={emotion.alt}
-                      fill
-                      className="rounded-xs object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    {/* White box overlay */}
-                    <div
-                      className="absolute bottom-40 md:bottom-60 bg-white bg-opacity-95 px-8 py-6 flex flex-col items-start w-[90%] md:w-auto"
-                      style={{ minWidth: 220, maxWidth: 340 }}
-                    >
-                      <span className="font-bold text-2xl md:text-3xl text-black leading-tight">
-                        {emotion.title}
-                      </span>
-                      <span className="text-black text-base md:text-lg mt-1 font-normal">
-                        {emotion.subtitle}
-                      </span>
+                  <motion.div
+                    key={emotionCurrent}
+                    custom={emotionDirection as number}
+                    variants={carouselVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="w-full md:pt-10 md:max-w-full"
+                  >
+                    <div className="relative w-full aspect-[383/500]">
+                      <Image
+                        src={emotion.image}
+                        alt={emotion.alt}
+                        fill
+                        className="rounded-xs object-cover"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                      {/* White box overlay */}
+                      <div
+                        className="absolute bottom-40 md:bottom-60 bg-white bg-opacity-95 px-8 py-6 flex flex-col items-start w-[90%] md:w-auto"
+                        style={{ minWidth: 220, maxWidth: 340 }}
+                      >
+                        <span className="font-bold text-2xl md:text-3xl text-black leading-tight">
+                          {emotion.title}
+                        </span>
+                        <span className="text-black text-base md:text-lg mt-1 font-normal">
+                          {emotion.subtitle}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </AnimatePresence>
                 {/* Carousel controls always below image, never moving */}
                 <div className="flex gap-2 mt-6 items-center justify-center">
                   <button
                     aria-label="Vorherige Emotion"
                     className="rounded-full bg-zinc-200 p-2 hover:bg-zinc-300 transition-colors cursor-pointer"
                     onClick={() => {
+                      setEmotionDirection(-1);
                       setEmotionCurrent(
                         (emotionCurrent - 1 + emotions.length) % emotions.length
                       );
@@ -913,6 +932,7 @@ export default function Home() {
                         idx === emotionCurrent ? "bg-zinc-800" : "bg-zinc-300"
                       } transition-colors`}
                       onClick={() => {
+                        setEmotionDirection(idx > emotionCurrent ? 1 : -1);
                         setEmotionCurrent(idx);
                         setEmotionShowFullPrompt(false);
                       }}
@@ -922,6 +942,7 @@ export default function Home() {
                     aria-label="Nächste Emotion"
                     className="rounded-full bg-zinc-200 p-2 hover:bg-zinc-300 transition-colors cursor-pointer"
                     onClick={() => {
+                      setEmotionDirection(1);
                       setEmotionCurrent((emotionCurrent + 1) % emotions.length);
                       setEmotionShowFullPrompt(false);
                     }}
@@ -945,143 +966,145 @@ export default function Home() {
               </div>
               {/* Text section */}
               <div className="flex flex-col pt-10 md:pt-0 w-full md:w-1/2">
-                <motion.h1
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-                  className="text-black font-bold text-4xl"
-                  style={{
-                    color: theme === "dark" ? "#fff" : "var(--foreground)",
-                  }}
+                <AnimatePresence
+                  mode="wait"
+                  initial={false}
+                  custom={emotionDirection}
                 >
-                  Emotionen
-                </motion.h1>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.7, ease: "easeOut" }}
-                  className="w-full h-[3px] mt-2 max-w-[1168px]"
-                />
-                <motion.span
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.7, delay: 0.21, ease: "easeOut" }}
-                  className="text-[#3a3a3a] pt-10"
-                  style={{
-                    color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
-                  }}
-                >
-                  {emotion.description}
-                </motion.span>
-                <motion.h2
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.7, delay: 0.24, ease: "easeOut" }}
-                  className="text-black text-xl font-bold pt-10"
-                  style={{
-                    color: theme === "dark" ? "#fff" : "var(--foreground)",
-                  }}
-                >
-                  Aktuelle Emotion:
-                </motion.h2>
-                <motion.h2
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.7, delay: 0.27, ease: "easeOut" }}
-                  className="text-xl text-black"
-                  style={{
-                    color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
-                  }}
-                >
-                  {emotion.name}
-                </motion.h2>
-                <motion.h2
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-                  className="text-black font-bold text-xl pt-10"
-                  style={{
-                    color: theme === "dark" ? "#fff" : "var(--foreground)",
-                  }}
-                >
-                  Benutzter prompt
-                </motion.h2>
-                {/* Collapsible prompt span */}
-                <motion.div
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.7, delay: 0.33, ease: "easeOut" }}
-                  className="relative"
-                >
-                  <span
-                    className={`block mt-2 rounded-md bg-zinc-100 p-4 font-mono text-base text-zinc-800 transition-all duration-300 ${
-                      emotionShowFullPrompt
-                        ? ""
-                        : "max-h-[3.5em] overflow-hidden"
-                    } relative`}
+                  <motion.div
+                    key={emotionCurrent}
+                    custom={emotionDirection as number}
+                    variants={carouselVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.5, ease: "easeOut" }}
                   >
-                    {emotion.prompt}
-                    {!emotionShowFullPrompt && (
-                      <span className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-zinc-100 to-transparent pointer-events-none" />
-                    )}
-                  </span>
-                  <button
-                    type="button"
-                    aria-label={
-                      emotionShowFullPrompt
-                        ? "Weniger anzeigen"
-                        : "Mehr anzeigen"
-                    }
-                    className="absolute bottom-2 right-2 bg-white text-zinc-800 rounded-full p-1 shadow hover:bg-zinc-200 transition-colors"
-                    onClick={() => setEmotionShowFullPrompt((v) => !v)}
-                  >
-                    <svg
-                      className={`w-5 h-5 transition-transform duration-300 ${
-                        emotionShowFullPrompt ? "rotate-180" : ""
-                      }`}
-                      fill="none"
-                      stroke="black"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
+                    <motion.h1
+                      initial={false}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-black font-bold text-4xl"
+                      style={{
+                        color: theme === "dark" ? "#fff" : "var(--foreground)",
+                      }}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
-                </motion.div>
-                <motion.h2
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.7, delay: 0.36, ease: "easeOut" }}
-                  className="text-black font-bold text-xl pt-5"
-                  style={{
-                    color: theme === "dark" ? "#fff" : "var(--foreground)",
-                  }}
-                >
-                  Weitere Informationen
-                </motion.h2>
-                <motion.span
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.7, delay: 0.39, ease: "easeOut" }}
-                  style={{
-                    color: theme === "dark" ? "#a9a9a9" : "var(--foreground)",
-                  }}
-                >
-                  {emotion.info}
-                </motion.span>
+                      Emotionen
+                    </motion.h1>
+                    <motion.div
+                      initial={false}
+                      animate={{ opacity: 1 }}
+                      className="w-full h-[3px] mt-2 max-w-[1168px]"
+                    />
+                    <motion.span
+                      initial={false}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-[#3a3a3a] pt-10"
+                      style={{
+                        color:
+                          theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                      }}
+                    >
+                      {emotion.description}
+                    </motion.span>
+                    <motion.h2
+                      initial={false}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-black text-xl font-bold pt-10"
+                      style={{
+                        color: theme === "dark" ? "#fff" : "var(--foreground)",
+                      }}
+                    >
+                      Aktuelle Emotion:
+                    </motion.h2>
+                    <motion.h2
+                      initial={false}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-xl text-black"
+                      style={{
+                        color:
+                          theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                      }}
+                    >
+                      {emotion.name}
+                    </motion.h2>
+                    <motion.h2
+                      initial={false}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-black font-bold text-xl pt-10"
+                      style={{
+                        color: theme === "dark" ? "#fff" : "var(--foreground)",
+                      }}
+                    >
+                      Benutzter prompt
+                    </motion.h2>
+                    {/* Collapsible prompt span */}
+                    <motion.div
+                      initial={false}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="relative"
+                    >
+                      <span
+                        className={`block mt-2 rounded-md bg-zinc-100 p-4 font-mono text-base text-zinc-800 transition-all duration-300 ${
+                          emotionShowFullPrompt
+                            ? ""
+                            : "max-h-[3.5em] overflow-hidden"
+                        } relative`}
+                      >
+                        {emotion.prompt}
+                        {!emotionShowFullPrompt && (
+                          <span className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-zinc-100 to-transparent pointer-events-none" />
+                        )}
+                      </span>
+                      <button
+                        type="button"
+                        aria-label={
+                          emotionShowFullPrompt
+                            ? "Weniger anzeigen"
+                            : "Mehr anzeigen"
+                        }
+                        className="absolute bottom-2 right-2 bg-white text-zinc-800 rounded-full p-1 shadow hover:bg-zinc-200 transition-colors"
+                        onClick={() => setEmotionShowFullPrompt((v) => !v)}
+                      >
+                        <svg
+                          className={`w-5 h-5 transition-transform duration-300 ${
+                            emotionShowFullPrompt ? "rotate-180" : ""
+                          }`}
+                          fill="none"
+                          stroke="black"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+                    </motion.div>
+                    <motion.h2
+                      initial={false}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-black font-bold text-xl pt-5"
+                      style={{
+                        color: theme === "dark" ? "#fff" : "var(--foreground)",
+                      }}
+                    >
+                      Weitere Informationen
+                    </motion.h2>
+                    <motion.span
+                      initial={false}
+                      animate={{ opacity: 1, y: 0 }}
+                      style={{
+                        color:
+                          theme === "dark" ? "#a9a9a9" : "var(--foreground)",
+                      }}
+                    >
+                      {emotion.info}
+                    </motion.span>
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </div>
           );
