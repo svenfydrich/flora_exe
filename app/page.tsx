@@ -823,9 +823,10 @@ export default function Home() {
               image: "/carousel/Stille.png",
               alt: "Stille",
               title: "Stille",
-              subtitle: "The Milkmaid – Johannes Vermeer",
-              prompt: "fehlt noch.",
-              info: "Stille ist der Zustand der Ruhe und Ausgeglichenheit. Flora verharrt, das Bild bleibt ruhig und unverändert. (Platzhaltertext)",
+              subtitle: "Mönch am Meer – Caspar David Friedrich",
+              prompt:
+                "faithful recreation of Caspar David Friedrich’s 'Monk by the Sea', exact same horizon placement, single dark figure standing on empty dune, facing dark ocean under a wide grey-blue sky, no visible detail in face or figure, brushwork soft and atmospheric, no added landscape or structures, flat and vast composition, somber and melancholic mood, colors slightly cooler and less dramatic than the original, with emotional neutrality and stillness",
+              info: "Stille ist der Zustand der Ruhe und Ausgeglichenheit. Flora verharrt, das Bild bleibt ruhig und unverändert. Diesen Zustand hat Flora standardmäßig.",
               description:
                 "Die Pflanze hat unterschiedliche Emotionen, die sie je nach Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist zärtlich, so zeigt sie ihre Freude und Glückseligkeit. Zückst du jedoch aber dein Handy und provozierst sie, so zeigt sie ihre verletzte und traurige Seite.",
             },
@@ -836,7 +837,7 @@ export default function Home() {
               title: "Lebensfreude im Überfluss",
               subtitle: "Luncheon of the Boating Party – Pierre-Auguste Renoir",
               prompt:
-                " impressionist oil painting in Renoir's style, group enjoying the late afternoon outdoors, faces smiling gently, gestures expressive but unforced, soft gold light filtering through tree branches, colors rich but painterly, not photorealistic, table adorned with a few seasonal fruits and glassware, river behind glows subtly in the distance, background nature in harmony, with blooming details slightly abstracted, brushwork warm and textured, atmosphere of full presence and mutual enjoyment – painterly, poetic and balanced)",
+                " impressionist oil painting in Renoir’s style, group enjoying the late afternoon outdoors, faces smiling gently, gestures expressive but unforced, soft gold light filtering through tree branches, colors rich but painterly, not photorealistic, table adorned with a few seasonal fruits and glassware, river behind glows subtly in the distance, background nature in harmony, with blooming details slightly abstracted, brushwork warm and textured, atmosphere of full presence and mutual enjoyment – painterly, poetic and balanced",
               info: "Lebensfreude im Überfluss ist die positive, lebensbejahende Emotion von Flora. Das Bild strahlt Freude und Energie aus und zeigt sich, wenn du Flora's Blätter sanft berührst.",
               description:
                 "Die Pflanze hat unterschiedliche Emotionen, die sie je nach Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist zärtlich, so zeigt sie ihre Freude und Glückseligkeit. Zückst du jedoch aber dein Handy und provozierst sie, so zeigt sie ihre verletzte und traurige Seite.",
