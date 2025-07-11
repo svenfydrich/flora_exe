@@ -349,7 +349,7 @@ export default function Home() {
             <div className="bg-black w-[80vw] max-w-2xl aspect-video flex items-center justify-center">
               <video
                 ref={videoRef}
-                src="/videos/trailer.mp4"
+                src="/videos/compressed_trailer.mp4"
                 controls
                 autoPlay
                 className="w-full h-full object-contain rounded"
