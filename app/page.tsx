@@ -18,6 +18,9 @@ export default function Home() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  // State for 'Zeig mir den Weg' video modal
+  const [isGetThereModalOpen, setIsGetThereModalOpen] = useState(false);
+  const getThereVideoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     if (isVideoModalOpen && videoRef.current) {
@@ -41,7 +44,26 @@ export default function Home() {
         });
       }
     }
-  }, [isVideoModalOpen]);
+    if (isGetThereModalOpen && getThereVideoRef.current) {
+      const video = getThereVideoRef.current;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          const videoEl = video as HTMLVideoElement & {
+            webkitRequestFullscreen?: () => Promise<void> | void;
+            msRequestFullscreen?: () => Promise<void> | void;
+          };
+          if (video.requestFullscreen) {
+            video.requestFullscreen();
+          } else if (videoEl.webkitRequestFullscreen) {
+            videoEl.webkitRequestFullscreen();
+          } else if (videoEl.msRequestFullscreen) {
+            videoEl.msRequestFullscreen();
+          }
+        });
+      }
+    }
+  }, [isVideoModalOpen, isGetThereModalOpen]);
 
   // Listen for fullscreen changes
   useEffect(() => {
@@ -359,6 +381,78 @@ export default function Home() {
           </motion.div>
         </motion.div>
       )}
+
+      {/* Get There Video modal */}
+      {isGetThereModalOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+        >
+          {/* Close button outside video, in modal overlay */}
+          {!isFullscreen && (
+            <button
+              className="fixed top-8 right-8 z-[60] text-white hover:text-white focus:outline-none bg-black/60 rounded-full p-2"
+              onClick={() => {
+                setIsGetThereModalOpen(false);
+                exitFullscreen();
+              }}
+              style={{ pointerEvents: "auto" }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-7 w-7"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#fff"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex items-center justify-center"
+          >
+            <div className="bg-black w-[80vw] max-w-2xl aspect-video flex items-center justify-center">
+              <video
+                ref={getThereVideoRef}
+                src="/videos/get_there.mp4"
+                controls
+                autoPlay
+                className="w-full h-full object-contain rounded"
+                style={{ background: "black" }}
+              />
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+
+      <motion.h1
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.8, delay: 1, ease: "easeOut" }}
+        className="text-black text-center text-xl font-light cursor-pointer group underline underline-offset-4 decoration-[3px] decoration-[var(--foreground)] dark:decoration-white group-hover:decoration-[#ffe066] dark:group-hover:decoration-[#ffe066] transition-[text-decoration-color] duration-200"
+        style={{ color: theme === "dark" ? "#fff" : "var(--foreground)" }}
+        onClick={() => setIsGetThereModalOpen(true)}
+      >
+        <span className="inline-block relative">
+          <span className="group-hover:text-[#ffe066] dark:group-hover:text-[#ffe066] flex items-center gap-2 underline underline-offset-6">
+            Zeig mir den Weg zu Flora
+          </span>
+        </span>
+      </motion.h1>
 
       {/* Main section */}
       <motion.div
@@ -834,7 +928,7 @@ export default function Home() {
               title: "Stille",
               subtitle: "Mönch am Meer – Caspar David Friedrich",
               prompt:
-                "faithful recreation of Caspar David Friedrich’s 'Monk by the Sea', exact same horizon placement, single dark figure standing on empty dune, facing dark ocean under a wide grey-blue sky, no visible detail in face or figure, brushwork soft and atmospheric, no added landscape or structures, flat and vast composition, somber and melancholic mood, colors slightly cooler and less dramatic than the original, with emotional neutrality and stillness",
+                "faithful recreation of Caspar David Friedrich's 'Monk by the Sea', exact same horizon placement, single dark figure standing on empty dune, facing dark ocean under a wide grey-blue sky, no visible detail in face or figure, brushwork soft and atmospheric, no added landscape or structures, flat and vast composition, somber and melancholic mood, colors slightly cooler and less dramatic than the original, with emotional neutrality and stillness",
               info: "Stille ist der Zustand der Ruhe und Ausgeglichenheit. Flora verharrt, das Bild bleibt ruhig und unverändert. Diesen Zustand hat Flora standardmäßig.",
               description:
                 "Die Pflanze hat unterschiedliche Emotionen, die sie je nach Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist zärtlich, so zeigt sie ihre Freude und Glückseligkeit. Zückst du jedoch aber dein Handy und provozierst sie, so zeigt sie ihre verletzte und traurige Seite.",
@@ -846,7 +940,7 @@ export default function Home() {
               title: "Lebensfreude im Überfluss",
               subtitle: "Luncheon of the Boating Party – Pierre-Auguste Renoir",
               prompt:
-                " impressionist oil painting in Renoir’s style, group enjoying the late afternoon outdoors, faces smiling gently, gestures expressive but unforced, soft gold light filtering through tree branches, colors rich but painterly, not photorealistic, table adorned with a few seasonal fruits and glassware, river behind glows subtly in the distance, background nature in harmony, with blooming details slightly abstracted, brushwork warm and textured, atmosphere of full presence and mutual enjoyment – painterly, poetic and balanced",
+                " impressionist oil painting in Renoir's style, group enjoying the late afternoon outdoors, faces smiling gently, gestures expressive but unforced, soft gold light filtering through tree branches, colors rich but painterly, not photorealistic, table adorned with a few seasonal fruits and glassware, river behind glows subtly in the distance, background nature in harmony, with blooming details slightly abstracted, brushwork warm and textured, atmosphere of full presence and mutual enjoyment – painterly, poetic and balanced",
               info: "Lebensfreude im Überfluss ist die positive, lebensbejahende Emotion von Flora. Das Bild strahlt Freude und Energie aus und zeigt sich, wenn du Flora's Blätter sanft berührst.",
               description:
                 "Die Pflanze hat unterschiedliche Emotionen, die sie je nach Interaktion mit ihr ausstrahlt. Streichelst du sie, und bist zärtlich, so zeigt sie ihre Freude und Glückseligkeit. Zückst du jedoch aber dein Handy und provozierst sie, so zeigt sie ihre verletzte und traurige Seite.",
